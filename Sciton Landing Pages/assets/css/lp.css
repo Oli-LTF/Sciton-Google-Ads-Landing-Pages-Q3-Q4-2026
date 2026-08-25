@@ -1,0 +1,965 @@
+/* ==========================================================================
+   Sciton UK — Google Ads landing page additions
+   Loaded AFTER sciton-theme.css. Additive only.
+
+   Rules:
+   - Colours, radii, shadows and timings are taken from the measured theme.
+     No new palette, no gradients on surfaces, no new radii.
+   - Interface transitions 0.15s ease-in-out. Content/disclosure 0.5s–1s ease.
+   - Animate transform/opacity only.
+   ========================================================================== */
+
+:root {
+  --lp-dark:        #252525;  /* brand-dark-gray */
+  --lp-light:       #f7f7f7;  /* brand-light-gray */
+  --lp-gray-300:    #717171;
+  --lp-gray-200:    #a9a9a9;
+  --lp-border:      #e5e5e5;  /* gray-border */
+  --lp-primary:     #003595;  /* brand-primary — hover/active only */
+  --lp-navbar-h:    64px;
+}
+
+/* --------------------------------------------------------------------------
+   1. Landing-page header
+   Same navbar shell as sciton.uk, nav links removed to stop paid-click leaks.
+   -------------------------------------------------------------------------- */
+
+.lp-navbar__phone {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--lp-dark);
+  transition: color .15s ease-in-out;
+}
+.lp-navbar__phone:hover { color: var(--lp-primary); }
+.lp-navbar__phone .icon { font-size: 1rem; color: var(--lp-gray-300); }
+
+/* --------------------------------------------------------------------------
+   2. Anchor nav — adds a right-aligned CTA the site version doesn't carry
+   -------------------------------------------------------------------------- */
+
+.anchor-nav .lp-anchor-cta { flex: 0 0 auto; margin-left: auto; }
+
+.anchor-nav a.is-active,
+.anchor-nav a:hover { color: var(--lp-dark); }
+
+/* --------------------------------------------------------------------------
+   3. Trust bar — the campaign plan's ad callouts, surfaced above the fold
+   -------------------------------------------------------------------------- */
+
+.lp-trustbar {
+  border-top: 1px solid var(--lp-border);
+  border-bottom: 1px solid var(--lp-border);
+}
+.lp-trustbar__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 2rem;
+  margin: 0;
+  padding: 2rem 0;
+  list-style: none;
+}
+.lp-trustbar__item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.33333;
+  color: var(--lp-gray-300);
+}
+.lp-trustbar__item .icon {
+  flex: 0 0 auto;
+  font-size: 1.25rem;
+  color: var(--lp-dark);
+}
+@media (min-width: 768px) { .lp-trustbar__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .lp-trustbar__list { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+/* --------------------------------------------------------------------------
+   4. Modules grid
+   Same card treatment as the site's treatment-cards scroller, but laid out as
+   a responsive grid instead of a GSAP-pinned horizontal scroll. Scroll-jacking
+   costs conversions and breaks on mobile; the card design is unchanged.
+   -------------------------------------------------------------------------- */
+
+.lp-modules {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) { .lp-modules { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .lp-modules { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.lp-module {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 1.75rem 2.5rem;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 24px;
+  box-shadow: 3px 14px 64px rgba(0, 0, 0, .12);
+}
+.lp-module__image {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  margin-bottom: -2rem;
+  transform: translateY(-3.125rem);
+  transition: transform .25s ease;
+}
+.lp-module:hover .lp-module__image { transform: translateY(-3.5rem); }
+.lp-module__name { margin: 0 0 .25rem; color: var(--lp-dark); }
+.lp-module__desc {
+  margin: 0 0 1.5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+.lp-module .btn { align-self: center; }
+
+/* C2 reuses the module card for OMNI's handpieces. Those renders are supplied
+   at three different aspect ratios, so the box is squared off to keep the card
+   headings on one baseline across the row. */
+.page-omni-lp .lp-module__image { aspect-ratio: 1 / 1; object-fit: contain; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-module__image { transition: none; }
+  .lp-module:hover .lp-module__image { transform: translateY(-3.125rem); }
+}
+
+/* --------------------------------------------------------------------------
+   5. Comparison table
+   JOULE vs mJOULE on Sciton's own published specifications.
+   Hairlines only — no fills, matching the site's compare-devices component.
+   -------------------------------------------------------------------------- */
+
+.lp-compare__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.lp-compare table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  text-align: left;
+}
+.lp-compare th,
+.lp-compare td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--lp-border);
+  vertical-align: top;
+}
+.lp-compare thead th {
+  padding-top: 0;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  line-height: 1.33333;
+  color: var(--lp-gray-200);
+}
+.lp-compare tbody th {
+  width: 34%;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.375;
+  color: var(--lp-gray-300);
+}
+.lp-compare tbody td {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--lp-dark);
+}
+.lp-compare tbody tr:last-child th,
+.lp-compare tbody tr:last-child td { border-bottom: 0; }
+.lp-compare__device { display: block; width: auto; max-height: 180px; margin: 0 auto 1rem; }
+.lp-compare .icon-checkbox-checked { font-size: 1.25rem; color: var(--lp-dark); }
+
+@media (max-width: 767px) {
+  .lp-compare th, .lp-compare td { padding: 1rem .75rem; }
+  .lp-compare tbody td { font-size: 1rem; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Testimonials
+   -------------------------------------------------------------------------- */
+
+.lp-quotes {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 1024px) { .lp-quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.lp-quote {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 3px 14px 64px rgba(0, 0, 0, .12);
+}
+.lp-quote .icon-quotes {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--lp-gray-200);
+}
+.lp-quote__text {
+  flex: 1 1 auto;
+  margin: 0 0 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.375;
+  color: var(--lp-dark);
+}
+.lp-quote__name { margin: 0; font-size: 1rem; font-weight: 500; line-height: 1.5; color: var(--lp-dark); }
+.lp-quote__role { margin: 0; font-size: .875rem; line-height: 1.5; color: var(--lp-gray-300); }
+
+/* Placeholder marker — delete this rule once real quotes are in. */
+.lp-quote[data-placeholder="true"] { position: relative; }
+.lp-quote[data-placeholder="true"]::after {
+  content: "PLACEHOLDER";
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: .5rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--lp-gray-200);
+}
+
+/* --------------------------------------------------------------------------
+   7. Demo form
+   Uses the theme's .form-skin control styling; padding reset to a
+   label-above layout (the theme default is top-heavy for floating labels).
+   -------------------------------------------------------------------------- */
+
+.lp-form { max-width: 720px; }
+
+.lp-form .form-skin input[type="text"],
+.lp-form .form-skin input[type="email"],
+.lp-form .form-skin input[type="tel"],
+.lp-form .form-skin select,
+.lp-form .form-skin textarea {
+  padding: .75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--lp-dark);
+  transition: border-color .15s ease-in-out;
+}
+.lp-form .form-skin input:focus-visible,
+.lp-form .form-skin select:focus-visible,
+.lp-form .form-skin textarea:focus-visible {
+  outline: 2px solid var(--lp-primary);
+  outline-offset: 2px;
+  border-color: var(--lp-dark);
+}
+.lp-form textarea { min-height: 120px; resize: vertical; }
+
+.lp-form__grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+@media (min-width: 640px) { .lp-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.lp-form__full { grid-column: 1 / -1; }
+
+.lp-form__label {
+  display: block;
+  margin-bottom: .5rem;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  line-height: 1.33333;
+  color: var(--lp-gray-300);
+}
+.lp-form__req { color: var(--lp-dark); }
+
+.lp-form__error {
+  display: none;
+  margin-top: .375rem;
+  font-size: .875rem;
+  line-height: 1.33333;
+  color: var(--lp-dark);
+}
+.lp-form input[aria-invalid="true"],
+.lp-form select[aria-invalid="true"],
+.lp-form textarea[aria-invalid="true"] { border-color: var(--lp-dark); border-width: 2px; }
+.lp-form__error.is-visible { display: block; }
+
+.lp-form__consent {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+.lp-form__consent input { flex: 0 0 auto; margin-top: .25rem; }
+
+.lp-form__status { margin-top: 1.5rem; }
+.lp-form__status:empty { margin-top: 0; }
+
+/* --------------------------------------------------------------------------
+   8. Sticky mobile CTA
+   -------------------------------------------------------------------------- */
+
+.lp-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 997;
+  display: flex;
+  gap: .75rem;
+  padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1px solid var(--lp-border);
+  transform: translateY(100%);
+  transition: transform .5s ease;
+}
+.lp-sticky.is-visible { transform: translateY(0); }
+.lp-sticky .btn { flex: 1 1 auto; }
+@media (min-width: 1024px) { .lp-sticky { display: none; } }
+@media (prefers-reduced-motion: reduce) { .lp-sticky { transition: none; } }
+
+/* --------------------------------------------------------------------------
+   9. Utility
+   -------------------------------------------------------------------------- */
+
+.lp-stat-figure { width: 76px; height: auto; flex: 0 0 auto; }
+
+/* C2 has no outlined-numeral SVGs of its own, so its statistics list renders
+   the figure as text in the same 76px lane the images occupy on C1. */
+.lp-stat-num {
+  display: block;
+  width: auto;
+  min-width: 8rem;
+  margin-bottom: .5rem;
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: #fff;
+}
+.lp-stat-num small { font-size: .5em; margin-left: .1em; }
+@media (min-width: 768px) { .lp-stat-num { margin-bottom: 0; } }
+
+
+.lp-ba {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
+}
+.lp-ba img { width: 100%; height: auto; border-radius: 8px; display: block; }
+.lp-ba figcaption {
+  grid-column: 1 / -1;
+  margin-top: .75rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+.lp-ba__tag {
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--lp-gray-200);
+}
+
+.lp-skip:focus-visible { outline: 2px solid var(--lp-primary); outline-offset: 2px; }
+
+/* Respect reduced motion across the theme's own reveal system. */
+@media (prefers-reduced-motion: reduce) {
+  .js-fade:not(.js-ignore) { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   10. Theme utilities absent from the purged production build
+   sciton-theme.css is a purged Tailwind build — it only contains the classes
+   sciton.uk itself uses. These few are needed here and are reproduced with
+   the theme's own breakpoints (640 / 768 / 1024 / 1270) and 4px scale.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .md\:inline-block { display: inline-block; }
+  .md\:flex-nowrap  { flex-wrap: nowrap; }
+}
+@media (min-width: 1024px) {
+  .lg\:pr-12 { padding-right: 3rem; }
+  .lg\:pl-12 { padding-left: 3rem; }
+}
+
+/* --------------------------------------------------------------------------
+   11. Anchor-nav sizing
+   The site's anchor-nav is a 56px row. Adding the CTA made it taller, so the
+   button is sized down to sit inside the same row height.
+   -------------------------------------------------------------------------- */
+
+.anchor-nav .lp-anchor-cta .btn {
+  padding-top: .375rem;
+  padding-bottom: .375rem;
+  font-size: .875rem;
+}
+
+/* --------------------------------------------------------------------------
+   12. Hero call-to-action pair
+   -------------------------------------------------------------------------- */
+
+.lp-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+}
+.lp-hero-ctas .btn-action { margin: 0; }
+.lp-hero-ctas .btn { margin: 0; }
+
+/* --------------------------------------------------------------------------
+   13. Modules band
+   The site's .treatment-cards is a GSAP-pinned horizontal scroller and
+   carries min-height:100vh for that purpose. This page lays the same cards
+   out as a static grid, so the viewport lock is released.
+   -------------------------------------------------------------------------- */
+
+.treatment-cards { min-height: 0; }
+
+/* --------------------------------------------------------------------------
+   14. Fixes found in visual review
+   -------------------------------------------------------------------------- */
+
+/* Compare table — device shots sit above the column label and must not clip */
+.lp-compare thead th { padding-bottom: 1rem; }
+.lp-compare__device {
+  height: 180px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom;
+}
+.lp-compare__name {
+  display: block;
+  margin-top: .75rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--lp-dark);
+}
+
+/* FAQ — the closed panel keeps its margin, which opens a gap under each
+   question. Move the spacing inside the panel so a closed row is flush. */
+.content-accordion__item-answer { margin-top: 0 !important; }
+.content-accordion__item-answer > .wysiwyg { padding-top: 1rem; }
+
+/* Consent checkbox — the theme hides native checkboxes and expects a sibling
+   pill label, which is wrong for a consent line. Rebuild it with the theme's
+   own checkbox sprite icons. */
+.lp-form__consent { cursor: pointer; }
+.lp-form__consent input[type="checkbox"] {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.lp-form__box {
+  flex: 0 0 auto;
+  margin-top: .125rem;
+  line-height: 0;
+  color: var(--lp-dark);
+}
+.lp-form__box .icon { font-size: 1.25rem; }
+.lp-form__box .icon-checkbox-checked { display: none; }
+.lp-form__consent input:checked ~ .lp-form__box .icon-checkbox { display: none; }
+.lp-form__consent input:checked ~ .lp-form__box .icon-checkbox-checked { display: inline-block; }
+.lp-form__consent input:focus-visible ~ .lp-form__box {
+  outline: 2px solid var(--lp-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Before / after — three columns of differing crops must still line up */
+.lp-ba__frame { position: relative; }
+.lp-ba__frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 8px;
+  display: block;
+}
+.lp-ba__label {
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
+  z-index: 1;
+  padding: .25rem .625rem;
+  font-size: .625rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  line-height: 1.33333;
+  color: var(--lp-dark);
+  background-color: rgba(255, 255, 255, .9);
+  border-radius: 9999px;
+}
+
+/* About — keep the two-image cluster on a shared baseline */
+#about .row img { aspect-ratio: 4 / 3; object-fit: cover; }
+
+/* Privacy link sits outside the consent label so clicking it doesn't
+   also toggle the checkbox. */
+.lp-form__note {
+  margin: .5rem 0 0 2rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+.lp-form__note a { text-decoration: underline; transition: color .15s ease-in-out; }
+.lp-form__note a:hover { color: var(--lp-primary); }
+
+/* --------------------------------------------------------------------------
+   15. Mobile
+   Below the theme's lg breakpoint the anchor-nav has no links to show, so it
+   is hidden rather than left as an empty title bar. The sticky CTA covers
+   navigation on small screens.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .anchor-nav { display: none; }
+
+  /* the theme's hero wrapper is padded for desktop; give small screens the
+     same 1rem gutter the navbar uses */
+  .hero-banner-new .hero-banner-new__wrapper { padding: 0 1rem; }
+  .container { padding-left: 1rem; padding-right: 1rem; }
+  .row { margin-left: -.5rem; margin-right: -.5rem; }
+  .col { padding-left: .5rem; padding-right: .5rem; }
+
+  /* keep the page clear of the fixed bottom CTA bar */
+  body { padding-bottom: 80px; }
+}
+
+/* C3 only: the hero's decorative giant word is 11 characters. "JOULE" and
+   "OMNI" fit the theme's 64px mobile size; "RESURFACING" does not and would
+   clip mid-word against the hero's overflow:hidden. Scoped to the page so
+   C1 and C2 keep the theme size. */
+@media (max-width: 767px) {
+  .page-halo-lp .hdg-giant { font-size: 3rem; }
+}
+
+@media (max-width: 639px) {
+  .lp-hero-ctas { flex-direction: column; align-items: stretch; }
+  .lp-hero-ctas .btn-action,
+  .lp-hero-ctas .btn { width: 100%; max-width: none; text-align: left; }
+  .lp-hero-ctas .btn { text-align: center; }
+}
+
+/* --------------------------------------------------------------------------
+   16. Hero ambient orbs
+   The site's .blob layer is position:fixed and drifts behind the entire page.
+   Here it is scoped to the hero so the effect stays where it was asked for.
+   To make it page-wide instead: delete this block and move the .blob div to
+   be the first child of <body>.
+   -------------------------------------------------------------------------- */
+
+.hero-banner-new .blob {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.hero-banner-new .hero-banner-new__wrapper { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blob::before,
+  .blob::after,
+  .blob .inner-blob { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   17. CTAs without the arrow indicator
+   The theme builds .btn-action's arrow from two pseudo-elements: :before is
+   the 42px dark disc, :after is the white chevron image sitting on top. Both
+   are removed here, and the 4rem right padding that reserved the arrow lane
+   is rebalanced so the label centres in the pill.
+   -------------------------------------------------------------------------- */
+
+.btn-action::before,
+.btn-action::after { content: none; display: none; }
+
+.btn-action {
+  padding-right: 1.5rem;
+  text-align: center;
+  transition: background-color .15s ease-in-out, color .15s ease-in-out, border-color .15s ease-in-out;
+}
+.btn-action:hover,
+.btn-action:focus-visible {
+  background-color: var(--lp-dark);
+  border-color: var(--lp-dark);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   18. Sciton iQ reels — scroll-linked counter-slide
+   Mirrors sciton.com/joule: as the section travels through the viewport the
+   top reel slides right and the bottom reel slides left, about 15% each way.
+   The theme sets the -15%/+15% start state in CSS; this drives it from
+   scroll position.
+   -------------------------------------------------------------------------- */
+
+.graphic-screens .top-reel,
+.graphic-screens .bottom-reel { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .graphic-screens .top-reel,
+  .graphic-screens .bottom-reel { will-change: auto; }
+}
+
+/* --------------------------------------------------------------------------
+   19. C3 hero spacing
+   The theme's hero has no vertical padding: on C1 and C2 the tall product
+   render sets the band height and the shorter copy column sits inside it with
+   room to spare. C3's HALO render is landscape, so the copy column is the
+   taller of the two and the text runs flush to the top and bottom edges of
+   the band. This gives the C3 hero its own vertical rhythm. Scoped to the
+   page, so C1 and C2 are untouched.
+   -------------------------------------------------------------------------- */
+
+.page-halo-lp .hero-banner-new { padding-bottom: 3rem; }
+
+@media (min-width: 1024px) {
+  .page-halo-lp .hero-banner-new { padding-top: 4rem; padding-bottom: 5rem; }
+}
+
+/* C3's module row carries two cards, not three or six. The shared grid goes
+   to three columns at lg, which would leave the pair stranded against an
+   empty third column, so C3 takes two columns and the row is capped and
+   centred to keep the cards the same width they are on C1 and C2. */
+
+@media (min-width: 1024px) {
+  .page-halo-lp .lp-modules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   20. Criteria grid — C4/C5/C6 only
+   The "what to compare" block on the competitor pages. Text-only card using
+   the same surface as .lp-module: white, 24px radius, the theme's
+   3px 14px 64px shadow. No new colour, radius or shadow is introduced.
+   -------------------------------------------------------------------------- */
+
+.lp-criteria {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px)  { .lp-criteria { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .lp-criteria { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.lp-criteria__item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2.5rem 2rem;
+  background-color: #fff;
+  border-radius: 24px;
+  box-shadow: 3px 14px 64px rgba(0, 0, 0, .12);
+}
+.lp-criteria__num {
+  margin: 0 0 1.25rem;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  line-height: 1.33333;
+  color: var(--lp-gray-300);
+}
+.lp-criteria__q {
+  margin: 0 0 .75rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--lp-dark);
+}
+.lp-criteria__why {
+  margin: 0;
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+
+/* --------------------------------------------------------------------------
+   21. Comparison table — criteria variant, C4/C5/C6 only
+   C1–C3 compare two Sciton devices, so both columns carry a device shot and
+   equal weight. The competitor pages compare Sciton against a question, not
+   against a rival's specification: column two is a prompt for the buyer to
+   put to whoever else they are talking to. It is therefore set as body copy
+   in --lp-gray-300 rather than as a 1.25rem statement, so the page never
+   reads as though it is asserting a competitor's numbers.
+   -------------------------------------------------------------------------- */
+
+.lp-compare--vs thead th { vertical-align: bottom; }
+.lp-compare--vs .lp-compare__name { margin-top: 0; }
+.lp-compare--vs .lp-compare__name--ask { color: var(--lp-gray-300); }
+.lp-compare--vs tbody td + td {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+
+@media (max-width: 767px) {
+  .lp-compare--vs tbody td + td { font-size: .9375rem; }
+}
+
+/* --------------------------------------------------------------------------
+   22. Competitor pages — hero
+   The decorative giant word is "COMPARE" on all three, which fits, but the
+   H1 carries a competitor name and runs longer than C1's, so the hero gets
+   the same vertical rhythm C3 needed. Scoped to the three body classes.
+   -------------------------------------------------------------------------- */
+
+.page-vs-cynosure .hero-banner-new,
+.page-vs-fotona .hero-banner-new,
+.page-vs-platforms .hero-banner-new { padding-bottom: 3rem; }
+
+@media (min-width: 1024px) {
+  .page-vs-cynosure .hero-banner-new,
+  .page-vs-fotona .hero-banner-new,
+  .page-vs-platforms .hero-banner-new { padding-top: 3rem; padding-bottom: 4rem; }
+}
+
+/* C5's module row carries four cards. The shared grid goes to three columns
+   at lg, which would strand the fourth on its own row, so C5 takes two
+   columns and the block is capped and centred. */
+
+@media (min-width: 1024px) {
+  .page-vs-fotona .lp-modules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* The non-affiliation line sits under the H1 and must read as small print,
+   not as part of the offer. */
+.lp-disclaimer {
+  margin-top: 1.25rem;
+  font-size: .8125rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+
+/* --------------------------------------------------------------------------
+   23. Index — the internal listing page at the site root
+   Not a landing page: this is the front door we present from, linking to the
+   six campaign pages. Same tokens as everything else — no new colour, radius
+   or shadow. Scoped to .page-index so nothing here can reach a live page.
+   -------------------------------------------------------------------------- */
+
+.page-index .lp-masthead {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--lp-border);
+}
+@media (min-width: 1024px) {
+  .page-index .lp-masthead { padding: 6rem 0 4rem; }
+}
+
+.lp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-meta__item {
+  padding: .375rem .875rem;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  line-height: 1.33333;
+  color: var(--lp-gray-300);
+  border: 1px solid var(--lp-border);
+  border-radius: 9999px;
+}
+
+/* The card grid. Two up from sm, three up from lg — the same rhythm the
+   modules grid uses, so the page feels like part of the same system. */
+.lp-index {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 2.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px)  { .lp-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .lp-index { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.lp-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 24px;
+  box-shadow: 3px 14px 64px rgba(0, 0, 0, .12);
+  transition: box-shadow .15s ease-in-out;
+}
+
+/* The hover lift is only armed once the theme's reveal has finished. The
+   reveal animates transform over 1s; declaring a 0.15s transform transition
+   up front would shorten it, because lp.css loads after the theme. */
+.lp-card.js-animated { transition: transform .15s ease-in-out, box-shadow .15s ease-in-out; }
+.lp-card.js-animated:hover,
+.lp-card.js-animated:focus-within { transform: translateY(-4px); }
+.lp-card:hover,
+.lp-card:focus-within { box-shadow: 3px 20px 72px rgba(0, 0, 0, .16); }
+
+/* The preview is a real 1440x900 screenshot of the page, cropped to the top
+   of the hero. Regenerate with .claude/shots.py after a page changes. */
+.lp-card__shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+  object-position: center top;
+  border-bottom: 1px solid var(--lp-border);
+}
+
+.lp-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 2rem;
+}
+.lp-card__code {
+  margin: 0 0 .75rem;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  line-height: 1.33333;
+  color: var(--lp-gray-300);
+}
+.lp-card__name {
+  margin: 0 0 .75rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--lp-dark);
+}
+.lp-card__name a {
+  color: inherit;
+  text-decoration: none;
+  transition: color .15s ease-in-out;
+}
+.lp-card__name a:hover { color: var(--lp-primary); }
+
+/* The whole card is clickable, but the accessible name comes from the real
+   link in the heading — the overlay is inert to assistive technology. */
+.lp-card { position: relative; }
+.lp-card__name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.lp-card__name a:focus-visible {
+  outline: 2px solid var(--lp-primary);
+  outline-offset: 3px;
+}
+
+.lp-card__desc {
+  margin: 0 0 1.5rem;
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+.lp-card__list {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  font-size: .8125rem;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+}
+.lp-card__list li {
+  padding: .375rem 0;
+  border-top: 1px solid var(--lp-border);
+}
+.lp-card__go {
+  margin: auto 0 0;
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--lp-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-card,
+  .lp-card.js-animated { transition: none; }
+  .lp-card.js-animated:hover,
+  .lp-card.js-animated:focus-within { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   24. Contrast fix — body copy on the dark bands
+   Found while building the index page, and it affects every page.
+
+   The theme's .wysiwyg paragraph colour is #717171, which is correct on white
+   (4.9:1) and what sciton.uk itself uses there. Inside a #252525 band the same
+   value drops to about 2.9:1, below WCAG AA. The statistics band's stat list
+   already carries text-gray-200 explicitly, so only the prose column was
+   affected — which is why it went unnoticed.
+
+   Stepping bare paragraphs up to #a9a9a9 on the dark bands puts them at 6.5:1,
+   the same value the two-tone headings use there. Anything that sets its own
+   colour class is left alone.
+   -------------------------------------------------------------------------- */
+
+.bg-brand-dark-gray .wysiwyg p:not([class*="text-"]),
+.bg-brand-dark-gray .wysiwyg li:not([class*="text-"]) {
+  color: var(--lp-gray-200);
+}
+
+/* The attribution footnote under each statistics band is the one element that
+   asks for #717171 explicitly, via .text-gray-300. That value is the correct
+   de-emphasised grey on white and the wrong one on #252525 — the site's own
+   de-emphasised grey on dark is #a9a9a9. It is a legal attribution line, so it
+   has to be readable. Checked across all seven pages: this footnote is the
+   only .text-gray-300 that lands on the dark ground; the white module cards
+   inside those bands colour their own copy and are unaffected. */
+.bg-brand-dark-gray > .container .text-gray-300 { color: var(--lp-gray-200); }
