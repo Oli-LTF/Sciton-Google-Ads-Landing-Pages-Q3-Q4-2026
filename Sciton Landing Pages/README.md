@@ -506,13 +506,9 @@ hard-coded, so both pages run off one script. C1 carries
 
 ### What C3 adds to `lp.css`
 
-Three rules, all scoped to the `.page-halo-lp` body class so C1 and C2 are
+Two rules, both scoped to the `.page-halo-lp` body class so C1 and C2 are
 untouched:
 
-* **`.page-halo-lp .hdg-giant`** (section 15) — the hero's decorative giant
-  word is eleven characters (`RESURFACING`). `JOULE` and `OMNI` fit the theme's
-  64px mobile size; this one overran the viewport and clipped mid-word against
-  the hero's `overflow: hidden`, so it steps down to 3rem below 768px.
 * **`.page-halo-lp .hero-banner-new`** (section 19) — the theme's hero carries
   no vertical padding. On C1 and C2 the tall portrait product render sets the
   band height and the shorter copy column sits inside it with room to spare;

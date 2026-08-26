@@ -559,14 +559,6 @@
   body { padding-bottom: 80px; }
 }
 
-/* C3 only: the hero's decorative giant word is 11 characters. "JOULE" and
-   "OMNI" fit the theme's 64px mobile size; "RESURFACING" does not and would
-   clip mid-word against the hero's overflow:hidden. Scoped to the page so
-   C1 and C2 keep the theme size. */
-@media (max-width: 767px) {
-  .page-halo-lp .hdg-giant { font-size: 3rem; }
-}
-
 @media (max-width: 639px) {
   .lp-hero-ctas { flex-direction: column; align-items: stretch; }
   .lp-hero-ctas .btn-action,
