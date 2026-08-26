@@ -1,0 +1,45 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/c1-sciton-brand/index.html",
+      "destination": "/c1-sciton-brand",
+      "permanent": true
+    },
+    {
+      "source": "/c2-lhr-equipment/index.html",
+      "destination": "/c2-lhr-equipment",
+      "permanent": true
+    },
+    {
+      "source": "/c3-fractional-resurfacing/index.html",
+      "destination": "/c3-fractional-resurfacing",
+      "permanent": true
+    },
+    {
+      "source": "/c4-competitor-cynosure/index.html",
+      "destination": "/c4-competitor-cynosure",
+      "permanent": true
+    },
+    {
+      "source": "/c5-competitor-fotona/index.html",
+      "destination": "/c5-competitor-fotona",
+      "permanent": true
+    },
+    {
+      "source": "/c6-competitor-platforms/index.html",
+      "destination": "/c6-competitor-platforms",
+      "permanent": true
+    },
+    {
+      "source": "/thank-you/index.html",
+      "destination": "/thank-you",
+      "permanent": true
+    }
+  ]
+}

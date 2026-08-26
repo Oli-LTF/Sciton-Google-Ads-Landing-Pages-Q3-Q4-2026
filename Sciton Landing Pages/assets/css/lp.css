@@ -312,8 +312,83 @@
 }
 .lp-form__consent input { flex: 0 0 auto; margin-top: .25rem; }
 
-.lp-form__status { margin-top: 1.5rem; }
+.lp-form__status {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-top: 1.5rem;
+  font-size: .9375rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--lp-gray-300);
+  opacity: 1;
+  transform: translateY(0);
+  transition: color .15s ease-in-out, opacity .25s ease, transform .25s ease;
+}
 .lp-form__status:empty { margin-top: 0; }
+.lp-form__status.is-sending {
+  color: var(--lp-gray-300);
+  opacity: .85;
+}
+.lp-form__status.is-success {
+  color: var(--lp-dark);
+  animation: lp-status-rise .45s ease both;
+}
+.lp-form__status.is-error { color: var(--lp-dark); }
+
+.lp-form__success-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--lp-dark);
+  border-radius: 50%;
+  transform: scale(.8);
+  animation: lp-success-pop .45s cubic-bezier(.2, .8, .2, 1.2) .05s both;
+}
+.lp-form__success-icon::after {
+  content: "";
+  position: absolute;
+  left: .56rem;
+  top: .42rem;
+  width: .55rem;
+  height: .95rem;
+  border-right: 2px solid var(--lp-dark);
+  border-bottom: 2px solid var(--lp-dark);
+  transform: rotate(45deg) scale(0);
+  transform-origin: center;
+  animation: lp-success-check .28s ease .28s both;
+}
+.lp-form.is-success .btn {
+  color: #fff;
+  background-color: var(--lp-dark);
+}
+
+@keyframes lp-status-rise {
+  from { opacity: 0; transform: translateY(.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes lp-success-pop {
+  0% { opacity: 0; transform: scale(.72); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes lp-success-check {
+  from { transform: rotate(45deg) scale(0); }
+  to { transform: rotate(45deg) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-form__status,
+  .lp-form__status.is-success,
+  .lp-form__success-icon,
+  .lp-form__success-icon::after {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+  .lp-form__success-icon::after { transform: rotate(45deg) scale(1); }
+}
 
 /* --------------------------------------------------------------------------
    8. Sticky mobile CTA

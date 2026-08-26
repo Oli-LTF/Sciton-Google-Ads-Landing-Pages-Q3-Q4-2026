@@ -6,6 +6,9 @@
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var WEB3FORMS_ACCESS_KEY = '9cf48d26-71a1-454a-a039-c3f39a8c0644';
+  var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/18066862/4t7jnem/';
+  var THANK_YOU_URL = '/thank-you/';
 
   /* ------------------------------------------------------------------------
      1. Scroll reveals
@@ -226,11 +229,140 @@
     draw();
   }
 
+  function getFormValue(form, name) {
+    var value = new FormData(form).get(name);
+    return value ? String(value).trim() : '';
+  }
+
+  function buildLeadPayload(form) {
+    var campaign = form.getAttribute('data-campaign') || 'C1-sciton-brand';
+    var firstName = getFormValue(form, 'first_name');
+    var lastName = getFormValue(form, 'last_name');
+    var fullName = [firstName, lastName].filter(Boolean).join(' ');
+
+    return {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: 'Sciton B2B demo request - ' + campaign,
+      from_name: fullName || 'Website enquiry',
+      first_name: firstName,
+      last_name: lastName,
+      name: fullName,
+      email: getFormValue(form, 'email'),
+      phone: getFormValue(form, 'phone'),
+      interest: getFormValue(form, 'interest') || 'Not provided',
+      budget: getFormValue(form, 'budget') || 'Not provided',
+      message: getFormValue(form, 'message'),
+      consent_to_contact: form.querySelector('[name="consent"]') && form.querySelector('[name="consent"]').checked ? 'Yes' : 'No',
+      marketing_opt_in: form.querySelector('[name="marketing"]') && form.querySelector('[name="marketing"]').checked ? 'Yes' : 'No',
+      campaign: campaign,
+      form_id: form.id || 'demo-form',
+      page_title: document.title,
+      page_url: window.location.href,
+      submitted_at: new Date().toISOString(),
+      source: 'Sciton B2B landing pages'
+    };
+  }
+
+  function buildZapierPayload(payload) {
+    var clean = {};
+    Object.keys(payload).forEach(function (key) {
+      if (key !== 'access_key') clean[key] = payload[key];
+    });
+    return clean;
+  }
+
+  function setSubmittingState(form, isSubmitting) {
+    var button = form.querySelector('button[type="submit"]');
+    if (!button) return;
+    if (!button.getAttribute('data-default-text')) {
+      button.setAttribute('data-default-text', button.textContent);
+    }
+    button.disabled = isSubmitting;
+    button.textContent = isSubmitting ? 'Sending...' : button.getAttribute('data-default-text');
+  }
+
+  function setFormStatus(status, type, message) {
+    if (!status) return;
+    status.classList.remove('is-sending', 'is-success', 'is-error');
+
+    if (!type) {
+      status.textContent = message || '';
+      return;
+    }
+
+    status.classList.add('is-' + type);
+
+    if (type === 'success') {
+      status.innerHTML = '<span class="lp-form__success-icon" aria-hidden="true"></span><span>' + message + '</span>';
+      return;
+    }
+
+    status.textContent = message;
+  }
+
+  function addHiddenField(form, name, value) {
+    var input = form.querySelector('input[type="hidden"][data-generated-field="' + name + '"]');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.setAttribute('data-generated-field', name);
+      form.appendChild(input);
+    }
+    input.value = value;
+  }
+
+  function submitToWeb3Forms(form, payload) {
+    if (!WEB3FORMS_ACCESS_KEY) {
+      throw new Error('Missing Web3Forms access key');
+    }
+
+    Object.keys(payload).forEach(function (key) {
+      if (form.elements[key]) return;
+      addHiddenField(form, key, payload[key]);
+    });
+    addHiddenField(form, 'access_key', WEB3FORMS_ACCESS_KEY);
+    addHiddenField(form, 'redirect', window.location.origin + THANK_YOU_URL);
+    addHiddenField(form, 'botcheck', '');
+
+    form.action = 'https://api.web3forms.com/submit';
+    form.method = 'POST';
+    form.submit();
+  }
+
+  function sendToZapier(payload) {
+    if (!ZAPIER_WEBHOOK_URL) {
+      return Promise.reject(new Error('Missing Zapier webhook URL'));
+    }
+
+    var formData = new FormData();
+    Object.keys(payload).forEach(function (key) {
+      formData.append(key, payload[key]);
+    });
+
+    return fetch(ZAPIER_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    });
+  }
+
+  function pushLeadEvent(eventName, payload) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: eventName,
+      form_id: payload.form_id,
+      campaign: payload.campaign,
+      product_interest: payload.interest,
+      budget: payload.budget,
+      marketing_opt_in: payload.marketing_opt_in === 'Yes'
+    });
+  }
+
   /* ------------------------------------------------------------------------
      7. Demo form
-     Client-side validation only. Submission is left unwired — see README.
-     Fires a dataLayer event so Google Ads conversion tracking can attach
-     without editing markup.
+     Validates, submits to Web3Forms and Zapier, then redirects to the local
+     thank-you page. Also fires dataLayer events for Google Ads tracking.
      ---------------------------------------------------------------------- */
   function initForm() {
     var form = document.getElementById('demo-form');
@@ -260,6 +392,7 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (form.classList.contains('is-submitting')) return;
 
       var fields = form.querySelectorAll('[required]');
       var firstInvalid = null;
@@ -269,24 +402,44 @@
 
       if (firstInvalid) {
         firstInvalid.focus();
-        if (status) status.textContent = 'Please check the highlighted fields.';
+        setFormStatus(status, null, 'Please check the highlighted fields.');
         return;
       }
 
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'generate_lead',
-        form_id: 'demo-form',
-        campaign: form.getAttribute('data-campaign') || 'C1-sciton-brand',
-        product_interest: (form.querySelector('[name="interest"]') || {}).value || '',
-        budget: (form.querySelector('[name="budget"]') || {}).value || '',
-        marketing_opt_in: !!(form.querySelector('[name="marketing"]') || {}).checked
-      });
+      var payload = buildLeadPayload(form);
+      form.classList.add('is-submitting');
+      form.classList.remove('is-success');
+      setSubmittingState(form, true);
+      setFormStatus(status, 'sending', 'Sending your enquiry securely...');
+      pushLeadEvent('lead_form_submit', payload);
 
-      // TODO: POST to the endpoint named in data-endpoint. See README.md.
-      if (status) {
-        status.textContent = 'Form validated. Submission endpoint is not yet connected — see README.md.';
-      }
+      sendToZapier(buildZapierPayload(payload)).catch(function (error) {
+        console.error('Sciton Zapier submission failed', error);
+      }).then(function () {
+        pushLeadEvent('lead_form_success', payload);
+        form.classList.add('is-success');
+        setSubmittingState(form, true);
+        setFormStatus(status, 'success', 'Enquiry sent. Taking you to the thank you page.');
+        window.setTimeout(function () {
+          try {
+            submitToWeb3Forms(form, payload);
+          } catch (error) {
+            form.classList.remove('is-submitting');
+            form.classList.remove('is-success');
+            setSubmittingState(form, false);
+            setFormStatus(status, 'error', 'Sorry, something went wrong. Please try again or call +44 02033 181108.');
+            pushLeadEvent('lead_form_error', payload);
+            console.error('Sciton Web3Forms submission failed', error);
+          }
+        }, 1400);
+      }).catch(function (error) {
+        form.classList.remove('is-submitting');
+        form.classList.remove('is-success');
+        setSubmittingState(form, false);
+        setFormStatus(status, 'error', 'Sorry, something went wrong. Please try again or call +44 02033 181108.');
+        pushLeadEvent('lead_form_error', payload);
+        console.error('Sciton lead form submission failed', error);
+      });
     });
   }
 

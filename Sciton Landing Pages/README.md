@@ -124,20 +124,26 @@ The campaign strategy specifically calls for these:
 > "A good example of a landing page will be current clinic owners with
 > testimonials on how the Sciton laser grew their clinic client base"
 
-### 2. Form endpoint — not connected
+### 2. Form endpoint — Web3Forms + Zapier
 
-Each page's `#demo-form` validates client-side and then stops. Both carry
-`action="#"` and `data-endpoint="TODO"`.
+Each page's `#demo-form` is handled by the shared `initForm()` logic in
+`assets/js/lp.js`. On valid submit it validates, sends the lead to Web3Forms,
+sends the same lead payload to Zapier, fires analytics events and redirects to
+`/thank-you/`.
 
-To wire it up, edit `initForm()` in `assets/js/lp.js` — the `TODO` comment
-marks the spot. Client-side validation, focus management and the analytics
-event already work and should be kept.
+To complete the connection, add the Sciton-specific values at the top of
+`assets/js/lp.js`:
+
+```js
+var WEB3FORMS_ACCESS_KEY = '9cf48d26-71a1-454a-a039-c3f39a8c0644';
+var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/18066862/4t7jnem/';
+```
 
 On a valid submit the page pushes:
 
 ```js
 window.dataLayer.push({
-  event: 'generate_lead',
+  event: 'lead_form_submit' | 'lead_form_success' | 'lead_form_error',
   form_id: 'demo-form',
   campaign: '<the form's data-campaign>',   // C1-sciton-brand | C2-lhr-equipment | C3-fractional-resurfacing
   product_interest: '<selected option>',
