@@ -12,12 +12,12 @@ Vercel deployment serves at `/`.
 
 | Campaign | Page | Ad-group angle |
 |---|---|---|
-| `C1 — Sciton Brand` | `c1-sciton-brand/index.html` | JOULE modularity — one platform, many applications |
-| `C2 — LHR Equipment Purchase` | `c2-lhr-equipment/index.html` | OMNI — throughput, all skin types, no consumables |
-| `C3 — Fractional & Resurfacing` | `c3-fractional-resurfacing/index.html` | HALO + ProFractional — hybrid resurfacing, Er:YAG depth, erbium vs CO2 |
-| `C4 — Competitor: Cynosure` | `c4-competitor-cynosure/index.html` | Breadth — treatments per chassis, upgrade path, consumables |
-| `C5 — Competitor: Fotona` | `c5-competitor-fotona/index.html` | Resurfacing depth — wavelengths, microns, coagulation control |
-| `C6 — Competitor: Lumenis / Cutera / Candela` | `c6-competitor-platforms/index.html` | Single-system limits — light and laser on one platform |
+| `C1 — Sciton Brand` | `sciton-brand/index.html` | JOULE modularity — one platform, many applications |
+| `C2 — LHR Equipment Purchase` | `lhr-equipment/index.html` | OMNI — throughput, all skin types, no consumables |
+| `C3 — Fractional & Resurfacing` | `fractional-resurfacing/index.html` | HALO + ProFractional — hybrid resurfacing, Er:YAG depth, erbium vs CO2 |
+| `C4 — Competitor: Cynosure` | `competitor-cynosure/index.html` | Breadth — treatments per chassis, upgrade path, consumables |
+| `C5 — Competitor: Fotona` | `competitor-fotona/index.html` | Resurfacing depth — wavelengths, microns, coagulation control |
+| `C6 — Competitor: Lumenis / Cutera / Candela` | `competitor-platforms/index.html` | Single-system limits — light and laser on one platform |
 
 ---
 
@@ -29,12 +29,12 @@ python3 .claude/serve.py
 
 Then open <http://127.0.0.1:4173/> for the listing page, or go straight to one:
 
-* <http://127.0.0.1:4173/c1-sciton-brand/index.html>
-* <http://127.0.0.1:4173/c2-lhr-equipment/index.html>
-* <http://127.0.0.1:4173/c3-fractional-resurfacing/index.html>
-* <http://127.0.0.1:4173/c4-competitor-cynosure/index.html>
-* <http://127.0.0.1:4173/c5-competitor-fotona/index.html>
-* <http://127.0.0.1:4173/c6-competitor-platforms/index.html>
+* <http://127.0.0.1:4173/sciton-brand/index.html>
+* <http://127.0.0.1:4173/lhr-equipment/index.html>
+* <http://127.0.0.1:4173/fractional-resurfacing/index.html>
+* <http://127.0.0.1:4173/competitor-cynosure/index.html>
+* <http://127.0.0.1:4173/competitor-fotona/index.html>
+* <http://127.0.0.1:4173/competitor-platforms/index.html>
 
 Any static server works — the page has no build step and no runtime dependency
 on sciton.uk.
@@ -45,12 +45,12 @@ on sciton.uk.
 
 ```
 index.html                           listing page — the root of the deployment
-c1-sciton-brand/index.html           C1 page (icon sprite is inlined)
-c2-lhr-equipment/index.html          C2 page (same sprite, inlined again)
-c3-fractional-resurfacing/index.html C3 page (same sprite, inlined again)
-c4-competitor-cynosure/index.html    C4 page (same sprite, inlined again)
-c5-competitor-fotona/index.html      C5 page (same sprite, inlined again)
-c6-competitor-platforms/index.html   C6 page (same sprite, inlined again)
+sciton-brand/index.html           C1 page (icon sprite is inlined)
+lhr-equipment/index.html          C2 page (same sprite, inlined again)
+fractional-resurfacing/index.html C3 page (same sprite, inlined again)
+competitor-cynosure/index.html    C4 page (same sprite, inlined again)
+competitor-fotona/index.html      C5 page (same sprite, inlined again)
+competitor-platforms/index.html   C6 page (same sprite, inlined again)
 assets/css/sciton-theme.css   verbatim copy of the sciton.uk theme stylesheet
 assets/css/lp.css             landing-page additions only
 assets/fonts/Aeonik-*.woff2   the site's own webfonts

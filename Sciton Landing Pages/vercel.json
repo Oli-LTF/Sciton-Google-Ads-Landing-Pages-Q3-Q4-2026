@@ -8,32 +8,92 @@
     },
     {
       "source": "/c1-sciton-brand/index.html",
-      "destination": "/c1-sciton-brand",
+      "destination": "/sciton-brand",
+      "permanent": true
+    },
+    {
+      "source": "/c1-sciton-brand",
+      "destination": "/sciton-brand",
       "permanent": true
     },
     {
       "source": "/c2-lhr-equipment/index.html",
-      "destination": "/c2-lhr-equipment",
+      "destination": "/lhr-equipment",
+      "permanent": true
+    },
+    {
+      "source": "/c2-lhr-equipment",
+      "destination": "/lhr-equipment",
       "permanent": true
     },
     {
       "source": "/c3-fractional-resurfacing/index.html",
-      "destination": "/c3-fractional-resurfacing",
+      "destination": "/fractional-resurfacing",
+      "permanent": true
+    },
+    {
+      "source": "/c3-fractional-resurfacing",
+      "destination": "/fractional-resurfacing",
       "permanent": true
     },
     {
       "source": "/c4-competitor-cynosure/index.html",
-      "destination": "/c4-competitor-cynosure",
+      "destination": "/competitor-cynosure",
+      "permanent": true
+    },
+    {
+      "source": "/c4-competitor-cynosure",
+      "destination": "/competitor-cynosure",
       "permanent": true
     },
     {
       "source": "/c5-competitor-fotona/index.html",
-      "destination": "/c5-competitor-fotona",
+      "destination": "/competitor-fotona",
+      "permanent": true
+    },
+    {
+      "source": "/c5-competitor-fotona",
+      "destination": "/competitor-fotona",
       "permanent": true
     },
     {
       "source": "/c6-competitor-platforms/index.html",
-      "destination": "/c6-competitor-platforms",
+      "destination": "/competitor-platforms",
+      "permanent": true
+    },
+    {
+      "source": "/c6-competitor-platforms",
+      "destination": "/competitor-platforms",
+      "permanent": true
+    },
+    {
+      "source": "/sciton-brand/index.html",
+      "destination": "/sciton-brand",
+      "permanent": true
+    },
+    {
+      "source": "/lhr-equipment/index.html",
+      "destination": "/lhr-equipment",
+      "permanent": true
+    },
+    {
+      "source": "/fractional-resurfacing/index.html",
+      "destination": "/fractional-resurfacing",
+      "permanent": true
+    },
+    {
+      "source": "/competitor-cynosure/index.html",
+      "destination": "/competitor-cynosure",
+      "permanent": true
+    },
+    {
+      "source": "/competitor-fotona/index.html",
+      "destination": "/competitor-fotona",
+      "permanent": true
+    },
+    {
+      "source": "/competitor-platforms/index.html",
+      "destination": "/competitor-platforms",
       "permanent": true
     },
     {
