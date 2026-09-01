@@ -845,6 +845,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <input type="tel" id="f-phone" name="phone" autocomplete="tel" required aria-describedby="e-phone">
                 <p class="lp-form__error" id="e-phone">Please enter a phone number.</p>
               </div>
+              <div class="lp-form__field lp-form__full">
+                <label class="lp-form__label" for="f-clinic-location">Where is your clinic located? (Please select the closest match) <span class="lp-form__req" aria-hidden="true">*</span></label>
+                <select id="f-clinic-location" name="clinic_location" required aria-describedby="e-clinic-location">
+                  <option value="">Please select the closest match</option>
+                  <option>North UK</option>
+                  <option>South UK</option>
+                  <option>North London</option>
+                  <option>South London</option>
+                  <option>Northern Ireland</option>
+                  <option>Southern Ireland</option>
+                </select>
+                <p class="lp-form__error" id="e-clinic-location">Please select the closest location.</p>
+              </div>
               <div class="lp-form__field">
                 <label class="lp-form__label" for="f-interest">Where are you in the process?</label>
                 <select id="f-interest" name="interest">

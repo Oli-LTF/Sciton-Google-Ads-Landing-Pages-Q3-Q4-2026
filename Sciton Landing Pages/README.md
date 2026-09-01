@@ -147,6 +147,7 @@ window.dataLayer.push({
   form_id: 'demo-form',
   campaign: '<the form's data-campaign>',   // C1-sciton-brand | C2-lhr-equipment | C3-fractional-resurfacing
   product_interest: '<selected option>',
+  clinic_location: '<selected region>',
   budget: '<selected budget band>',
   marketing_opt_in: <true|false>
 });
