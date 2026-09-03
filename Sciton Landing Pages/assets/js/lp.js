@@ -249,6 +249,7 @@
       name: fullName,
       email: getFormValue(form, 'email'),
       phone: getFormValue(form, 'phone'),
+      postcode: getFormValue(form, 'postcode'),
       clinic_location: getFormValue(form, 'clinic_location') || 'Not provided',
       interest: getFormValue(form, 'interest') || 'Not provided',
       budget: getFormValue(form, 'budget') || 'Not provided',
@@ -355,6 +356,7 @@
       form_id: payload.form_id,
       campaign: payload.campaign,
       product_interest: payload.interest,
+      postcode: payload.postcode,
       clinic_location: payload.clinic_location,
       budget: payload.budget,
       marketing_opt_in: payload.marketing_opt_in === 'Yes'
